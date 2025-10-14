@@ -15,5 +15,17 @@ describe('Integration Test: Express App', () => {
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body[0]).toHaveProperty('username', 'admin');
   });
+
+  test('POST /users should add a new admin user', async () => {
+    const newUser = { id: '2', adminusername: 'newadmin', adminpassword: 'newpass' };
+    const res = await request(app).post('/users').send(newUser);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('success', true);
+
+    const getRes = await request(app).get('/users');
+    const addedUser = getRes.body.find(user => user.adminusername === 'newadmin');
+    expect(addedUser).toBeDefined();
+    expect(addedUser).toHaveProperty('adminpassword', 'newpass');
+  });
 });
 

@@ -16,4 +16,13 @@ app.get('/users', (req, res) => {
   res.json(users);
 });
 
+app.post('/users', express.json(), (req, res) => {
+  const { id, username, password } = req.body;
+  const data = fs.readFileSync('./data/data.json', 'utf-8');
+  const users = JSON.parse(data);
+  users.push({ id, username, password });
+  fs.writeFileSync('./data/data.json', JSON.stringify(users));
+  res.json({ success: true });
+});
+
 module.exports = app;
