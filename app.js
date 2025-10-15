@@ -25,4 +25,13 @@ app.post('/users', express.json(), (req, res) => {
   res.json({ success: true });
 });
 
+app.delete('/users/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const data = fs.readFileSync('./data/data.json', 'utf-8');
+  const users = JSON.parse(data);
+  const updatedUsers = users.filter(user => user.id !== id);
+  fs.writeFileSync('./data/data.json', JSON.stringify(updatedUsers, null, 2));
+  res.json({ success: true });
+});
+
 module.exports = app;
