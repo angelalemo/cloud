@@ -69,7 +69,6 @@ app.post('/adminfunc', (req, res) => {
   }
 });
 
-<<<<<<< Updated upstream
 app.delete('/users/:id', (req, res) => {
   const id = Number(req.params.id);
   const dataPath = path.join(__dirname, './data/data.json');
@@ -81,8 +80,3 @@ app.delete('/users/:id', (req, res) => {
 });
 
 module.exports = app;
-=======
-
-
-module.exports = app;
->>>>>>> Stashed changes
