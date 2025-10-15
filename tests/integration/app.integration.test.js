@@ -26,7 +26,7 @@ describe('Integration Test: Express App', () => {
     const addedUser = getRes.body.find(user => user.username === 'users');
     expect(addedUser).toBeDefined();
     expect(addedUser).toHaveProperty('username', 'users');
-expect(addedUser).toHaveProperty('password', 'newpass');
+  expect(addedUser).toHaveProperty('password', 'newpass');
   });
   
   test('DELETE /users/:id should delete a user', async () => {
@@ -40,14 +40,5 @@ expect(addedUser).toHaveProperty('password', 'newpass');
     expect(deletedUser).toBeUndefined();
   });
 
-  // test('POST /adminfunc should add a new admin', async () => {
-  //   const newAdmin = { id: 6, username: 'newadmin', password: 'adminpass' };
-  //   const res = await request(app).post('/adminfunc').send(newAdmin);
-  //   expect(res.statusCode).toBe(200);
-  //   expect(res.body).toHaveProperty('success', true);
-  //   expect(res.body).toHaveProperty('message', 'Admin added successfully');
-  //   expect(res.body.admin).toHaveProperty('username', 'newadmin');
-  //   expect(res.body.admin).toHaveProperty('password', 'adminpass');
-  // });
 });
 
