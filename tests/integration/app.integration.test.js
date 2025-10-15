@@ -16,16 +16,28 @@ describe('Integration Test: Express App', () => {
     expect(res.body[0]).toHaveProperty('username', 'admin');
   });
 
-  test('POST /users should add a new admin user', async () => {
-    const newUser = { id: '2', adminusername: 'newadmin', adminpassword: 'newpass' };
+  test('POST /users should add a new user', async () => {
+    const newUser = { id: 5, username: 'users', password: 'newpass' };
     const res = await request(app).post('/users').send(newUser);
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('success', true);
 
     const getRes = await request(app).get('/users');
-    const addedUser = getRes.body.find(user => user.adminusername === 'newadmin');
+    const addedUser = getRes.body.find(user => user.username === 'users');
     expect(addedUser).toBeDefined();
-    expect(addedUser).toHaveProperty('adminpassword', 'newpass');
+    expect(addedUser).toHaveProperty('username', 'users');
+expect(addedUser).toHaveProperty('password', 'newpass');
+  });
+  
+  test('DELETE /users/:id should delete a user', async () => {
+    const userIdToDelete = 5;
+    const res = await request(app).delete(`/users/${userIdToDelete}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('success', true);
+
+    const getRes = await request(app).get('/users');
+    const deletedUser = getRes.body.find(user => user.id === userIdToDelete);
+    expect(deletedUser).toBeUndefined();
   });
 });
 
