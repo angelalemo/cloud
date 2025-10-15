@@ -151,8 +151,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm test -- --config jest.unit.config.js
-RUN npm test -- --config jest.integration.config.js
+RUN npm test
 
 # Stage 2: Run
 FROM node:20
