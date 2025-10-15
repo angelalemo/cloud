@@ -26,4 +26,4 @@ jobs:
         run: npm test -- --config jest.unit.config.js --runInBand
 
       - name: Run Integration Tests
-        run: npm test -- --config jest.integration.config.js --runInBand
+        run: jest --config jest.integration.config.js --runInBandand
