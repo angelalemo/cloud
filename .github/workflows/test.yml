@@ -22,8 +22,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Unit Tests
-        run: npm test -- --config jest.unit.config.js --runInBand
-
-      - name: Run Integration Tests
-        run: npm test -- --config jest.integration.config.js --runInBand
+      - name: Run Tests
+        run: npm run test
