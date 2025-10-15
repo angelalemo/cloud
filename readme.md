@@ -276,15 +276,3 @@ docker logs -f <container-id>
 3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open Pull Request
-
-## 🔹 License
-
-ISC License
-
-## 🔹 Contact
-
-สำหรับคำถามหรือข้อเสนอแนะ กรุณาติดต่อผ่าน GitHub Issues
-
----
-
-**หมายเหตุ**: เอกสารนี้อัปเดตล่าสุดเมื่อวันที่ $(date)
