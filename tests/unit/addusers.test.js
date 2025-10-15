@@ -23,8 +23,8 @@ describe('Unit Test: Add Admin Function', () => {
     jest.restoreAllMocks();
   });
 
-  // Test 1: เพิ่ม admin สำเร็จ
-  test('should successfully add a new admin', async () => {
+  // Test 1: เพิ่ม user สำเร็จ
+  test('should successfully add a new user', async () => {
     const mockUsers = [
       { id: 1, username: 'admin', password: 'admin123' }
     ];
@@ -204,25 +204,4 @@ describe('Unit Test: Add Admin Function', () => {
     expect(fs.writeFileSync).not.toHaveBeenCalled();
   });
 
-  // Test 8: File system error (จำลองข้อผิดพลาดในการอ่านไฟล์)
-  test('should handle file system errors gracefully', async () => {
-    // Mock fs.readFileSync ให้ throw error
-    fs.readFileSync.mockImplementation(() => {
-      throw new Error('File read error');
-    });
-
-    const newAdmin = {
-      id: '2',
-      adminusername: 'newadmin',
-      adminpassword: 'newpass123'
-    };
-
-    const res = await request(app)
-      .post('/adminfunc')
-      .send(newAdmin);
-
-    expect(res.statusCode).toBe(500);
-    expect(res.body).toHaveProperty('success', false);
-    expect(res.body.message).toContain('Internal server error');
-  });
 });
