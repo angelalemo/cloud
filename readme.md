@@ -161,58 +161,59 @@ EXPOSE 3000
 CMD ["node", "server.js"]
 ```
 
-### Docker Commands
-```bash
-# Build Docker image
-docker build -t cloud-app:latest .
-
-# Run container
-docker run -p 3000:3000 cloud-app:latest
-
-# Run in detached mode
-docker run -d -p 3000:3000 cloud-app:latest
-```
-
 ## 🔹 CI/CD Pipeline (GitHub Actions)
 
 ### Workflow File: `.github/workflows/docker-deploy.yml`
 
 ```yaml
-name: CI/CD with Docker
+name: Publish Docker image
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [published]
 
 jobs:
-  build-test-deploy:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Check out the repo
+        uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
-          node-version: 20
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Run Tests
-        run: |
-          npm install
-          npm test -- --config jest.unit.config.js
-          npm test -- --config jest.integration.config.js
-
-      - name: Build Docker image
-        run: docker build -t cloud-app:latest .
-
-      - name: Save Docker image as artifact
-        uses: actions/upload-artifact@v4
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          name: cloud-docker-image
-          path: |
-            $(docker save cloud-app:latest | gzip > cloud-app.tar.gz)
+          images: narumark/cloud-app
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: index.docker.io/narumark/cloud-app
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true
+
 ```
 
 ### Pipeline Steps
