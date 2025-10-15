@@ -36,7 +36,7 @@ describe('Login page script', () => {
   afterEach(() => jest.resetAllMocks());
 
 
-  it('password incorrect', async () => {
+  it('Username is incorrect', async () => {
     fetch.mockResolvedValueOnce({
       ok: true,
       json: async () => [{ username: 'admin', password: '1234' }],
