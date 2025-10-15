@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          alert(' added successfully');
+          alert('User added successfully');
         } else {
           alert('Failed to add : ' + data.message);
         }
